@@ -1,9 +1,8 @@
-#include "../../../Engine/Headers/UI/UIScene.hpp"
+#include "../../../Engine/Headers/GameScene.hpp"
 #include "../../../Engine/Headers/Map.hpp"
 #include "../../../Engine/ECS_Components/Components.hpp"
 
-
-class UIScene3 : public UIScene {
+class UIScene3 : public GameScene {
 public:
     UIScene3() = default;
     ~UIScene3() override = default;

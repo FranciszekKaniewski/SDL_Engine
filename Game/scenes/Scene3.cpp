@@ -6,6 +6,12 @@ void UIScene3::onEnter(Game& game) {
 
     font = Font("assets/fonts/Copyduck.otf", 32);
     createButton(game, "Exit", -1, 900, [](){std::cout << "Exit clicked!\n"; Game::isRunning = false;});
+
+    auto& enemy(manager.addEntity());
+    enemy.addComponent<TransformComponent>(0,0,6);
+    enemy.addComponent<SpriteComponent>("assets/Imgs/player2.png");
+    enemy.addComponent<ColliderComponent>("enemy");
+    enemy.addGroup(Game::groupEnemies);
 }
 
 void UIScene3::onExit(Game &game) {
@@ -16,7 +22,10 @@ void UIScene3::onExit(Game &game) {
     UIScene::clear();
 }
 
-void UIScene3::update(Game &game) {}
+void UIScene3::update(Game &game) {
+    manager.refresh();
+    manager.update();
+}
 
 void UIScene3::render(Game &game) {
     SDL_RenderClear(game.renderer);
@@ -24,6 +33,10 @@ void UIScene3::render(Game &game) {
     auto& tiles = manager.getGroup(Game::groupMap);
     for(auto& t : tiles){
         t->draw();
+    }
+    auto& enemies(manager.getGroup(Game::groupEnemies));
+    for(auto& e : enemies){
+        e->draw();
     }
 
     UIScene::render(game);
