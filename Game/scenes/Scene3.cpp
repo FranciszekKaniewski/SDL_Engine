@@ -4,7 +4,7 @@ void UIScene3::onEnter(Game& game) {
     map = new Map("assets/til.png",2,32,manager);
     map->LoadMap("assets/map50x50.map",50,50);
 
-    font.changeSize(32);
+    font = Font("assets/fonts/Copyduck.otf", 32);
     createButton(game, "Exit", -1, 900, [](){std::cout << "Exit clicked!\n"; Game::isRunning = false;});
 }
 
