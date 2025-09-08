@@ -81,6 +81,19 @@ Vector2D& Vector2D::Zero() {
     return *this;
 }
 
+float Vector2D::Length() const {
+    return sqrt(x * x + y * y);
+}
+
+Vector2D& Vector2D::Normalize() {
+    float length = Length();
+    if(length != 0) {
+        x /= length;
+        y /= length;
+    }
+    return *this;
+}
+
 
 std::ostream& operator<<(std::ostream& stream, const Vector2D& vec){
     stream << "(x: " << vec.x << ", y: " << vec.y << ")";

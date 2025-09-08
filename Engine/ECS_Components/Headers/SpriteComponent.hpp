@@ -16,7 +16,7 @@ private:
     bool animated = false;
     int frames = 0;
     int speed = 100;
-    int size = 16;
+    int size = 64;
 
 public:
 
@@ -34,8 +34,8 @@ public:
     SpriteComponent(const char* path, bool isAnimated){
         animated = isAnimated;
 
-        Animation idle = Animation(0,2,200);
-        Animation walk = Animation(2,2,200);
+        Animation idle = Animation(0,6,200);
+        Animation walk = Animation(1,8,200);
 
         animations.emplace("Idle", idle);
         animations.emplace("Walk", walk);
@@ -70,8 +70,8 @@ public:
         srcRect.h = size;
 
         if(animated){
-            srcRect.x = 9;
-            srcRect.w = 9;
+            srcRect.x = size;
+            srcRect.w = size;
             srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks()/speed) % frames);
         }
 

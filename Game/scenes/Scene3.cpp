@@ -7,11 +7,12 @@ void UIScene3::onEnter(Game& game) {
     font = Font("assets/fonts/Copyduck.otf", 32);
     createButton(game, "Exit", -1, 900, [](){std::cout << "Exit clicked!\n"; Game::isRunning = false;});
 
-    auto& enemy(manager.addEntity());
-    enemy.addComponent<TransformComponent>(0,0,6);
-    enemy.addComponent<SpriteComponent>("assets/Imgs/player2.png");
-    enemy.addComponent<ColliderComponent>("enemy");
-    enemy.addGroup(Game::groupEnemies);
+    auto& player(manager.addEntity());
+    player.addComponent<TransformComponent>(0,0,64,64,2);
+    player.addComponent<SpriteComponent>("assets/Imgs/Sprite-0001.png",true);
+    player.addComponent<MovementComponent>();
+    player.addComponent<ColliderComponent>("enemy");
+    player.addGroup(Game::groupPlayers);
 }
 
 void UIScene3::onExit(Game &game) {
@@ -25,6 +26,11 @@ void UIScene3::onExit(Game &game) {
 void UIScene3::update(Game &game) {
     manager.refresh();
     manager.update();
+
+    auto& players(manager.getGroup(Game::groupPlayers));
+    auto& player = players[0];
+    Game::camera.x = player->getComponent<TransformComponent>().position.x - game.getWindowSize().wight/2 + 64;
+    Game::camera.y = player->getComponent<TransformComponent>().position.y - game.getWindowSize().height/2 + 64;
 }
 
 void UIScene3::render(Game &game) {
@@ -34,9 +40,9 @@ void UIScene3::render(Game &game) {
     for(auto& t : tiles){
         t->draw();
     }
-    auto& enemies(manager.getGroup(Game::groupEnemies));
-    for(auto& e : enemies){
-        e->draw();
+    auto& players(manager.getGroup(Game::groupPlayers));
+    for(auto& p : players){
+        p->draw();
     }
 
     UIScene::render(game);
