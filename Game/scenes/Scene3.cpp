@@ -9,7 +9,7 @@ void UIScene3::onEnter(Game& game) {
 
     auto& player(manager.addEntity());
     player.addComponent<TransformComponent>(0,0,64,64,2);
-    player.addComponent<SpriteComponent>("assets/Imgs/Sprite-0001.png",true);
+    player.addComponent<SpriteComponent>("assets/Imgs/character-sprite.png",true);
     player.addComponent<MovementComponent>();
     player.addComponent<ColliderComponent>("enemy");
     player.addGroup(Game::groupPlayers);

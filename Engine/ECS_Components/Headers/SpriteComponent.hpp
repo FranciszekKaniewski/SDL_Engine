@@ -34,11 +34,15 @@ public:
     SpriteComponent(const char* path, bool isAnimated){
         animated = isAnimated;
 
-        Animation idle = Animation(0,6,200);
-        Animation walk = Animation(1,8,200);
+        Animation idle = Animation(0,2,300);
+        Animation walk_down = Animation(1,2,200);
+        Animation walk_up = Animation(2,2,200);
+        Animation walk_right = Animation(3,2,200);
 
         animations.emplace("Idle", idle);
-        animations.emplace("Walk", walk);
+        animations.emplace("Walk_Down", walk_down);
+        animations.emplace("Walk_Up", walk_up);
+        animations.emplace("Walk_Right", walk_right);
 
         Play("Idle");
 

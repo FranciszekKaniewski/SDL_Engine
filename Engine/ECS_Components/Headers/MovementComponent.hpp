@@ -26,22 +26,22 @@ public:
         if(state[SDL_SCANCODE_W]){
             sprite->spriteFlip = SDL_FLIP_NONE;
             dir.y = -1;
-            sprite->Play("Walk");
+            sprite->Play("Walk_Up");
         }
         if(state[SDL_SCANCODE_S]){
             sprite->spriteFlip = SDL_FLIP_NONE;
             dir.y = 1;
-            sprite->Play("Walk");
+            sprite->Play("Walk_Down");
         }
         if(state[SDL_SCANCODE_D]){
             sprite->spriteFlip = SDL_FLIP_NONE;
             dir.x = 1;
-            sprite->Play("Walk");
+            sprite->Play("Walk_Right");
         }
         if(state[SDL_SCANCODE_A]){
             sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
             dir.x = -1;
-            sprite->Play("Walk");
+            sprite->Play("Walk_Right");
         }
 
         if(state[SDL_SCANCODE_LSHIFT]){
