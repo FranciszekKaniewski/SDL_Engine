@@ -1,13 +1,9 @@
 #include "fstream"
 
 #include "./Headers/Map.hpp"
-#include "./Headers/ECS.hpp"
 #include "./ECS_Components/Components.hpp"
-#include "./Headers/game.h"
 
-Map::Map(const char* mfp,int ms,int ts,Manager& manager) : mapFilePath(mfp), mapScale(ms),tileSize(ts), manager(manager){
-
-}
+Map::Map(const char* mfp,int ms,int ts,Manager& manager) : mapFilePath(mfp), mapScale(ms),tileSize(ts), manager(manager){}
 
 Map::~Map(){}
 

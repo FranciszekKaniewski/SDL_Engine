@@ -18,10 +18,10 @@ void UIScene3::onEnter(Game& game) {
     map->LoadMap("assets/map50x50.map",50,50);
 
     auto& player(manager.addEntity());
-    player.addComponent<TransformComponent>(0,0,64,64,2);
+    player.addComponent<TransformComponent>(100,100,64,64,2);
     player.addComponent<SpriteComponent>("assets/Imgs/character-sprite.png",true);
     player.addComponent<MovementComponent>();
-    player.addComponent<ColliderComponent>("enemy");
+    player.addComponent<ColliderComponent>("player",15*2,11*2+42,34*2,22*2);
     player.addComponent<Inventory>();
     player.addGroup(Game::groupPlayers);
 }
@@ -42,6 +42,37 @@ void UIScene3::update(Game &game) {
     auto& player = players[0];
     Game::camera.x = player->getComponent<TransformComponent>().position.x - game.getWindowSize().wight/2 + 64;
     Game::camera.y = player->getComponent<TransformComponent>().position.y - game.getWindowSize().height/2 + 64;
+
+    //COLLISONS
+    SDL_Rect playerCol = player->getComponent<ColliderComponent>().collider;
+    Vector2D playerPos = player->getComponent<TransformComponent>().position;
+
+    auto& colliders = manager.getGroup(Game::groupColliders);
+
+    for(auto& c: colliders){
+
+        SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+
+        if(Collisions::AABB(cCol,playerCol)){
+            float n,m = 0;
+            float yDelta = (playerCol.y + playerCol.h/2)-(cCol.y + cCol.h/2);
+            float xDelta = (playerCol.x + playerCol.w/2)-(cCol.x + cCol.w/2);
+
+            float speed = player->getComponent<TransformComponent>().speed;
+
+            if(yDelta*yDelta <= xDelta*xDelta){
+                m = xDelta > 0 ? speed : speed*-1;
+                n = 0;
+            }else{
+                m = 0;
+                n= yDelta > 0 ? speed : speed*-1;
+            }
+            Vector2D move(m,n);
+
+            player->getComponent<TransformComponent>().position = playerPos.Add(move);
+        }
+    }
+    //
 }
 
 void UIScene3::handleEvents(Game &game) {
@@ -73,6 +104,10 @@ void UIScene3::render(Game &game) {
     auto& tiles = manager.getGroup(Game::groupMap);
     for(auto& t : tiles){
         t->draw();
+    }
+    auto& colliders = manager.getGroup(Game::groupColliders);
+    for(auto& c : colliders){
+        c->draw();
     }
     auto& players(manager.getGroup(Game::groupPlayers));
     for(auto& p : players){

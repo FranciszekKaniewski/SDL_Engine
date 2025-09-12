@@ -2,6 +2,7 @@
 #include "../../../Engine/Headers/Map.hpp"
 #include "../../../Engine/ECS_Components/Components.hpp"
 #include "../../../Engine/Headers/UI/UIFrame.hpp"
+#include "../../../Engine/Headers/Collisions.hpp"
 
 class UIScene3 : public GameScene {
 public:
