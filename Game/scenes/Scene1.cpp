@@ -1,27 +1,35 @@
 #include "./Headers/Scene1.hpp"
 
 void UIScene1::onEnter(Game& game) {
-    font = Font("assets/fonts/Copyduck.otf", 128);
+    font = Font("assets/fonts/gT.otf", 128);
 
-    createTextArea(game, game.title, -1, 100);
-    font.changeSize(64);
-    font.changeFontStyle("assets/fonts/Born2bSportyFS.otf");
+    uiFrame = new UIFrame(game);
+    uiFrame->addWindow({-1,-1,640,940},"assets/UI/windowBG.png");
+    Window* mainWindow = uiFrame->getWindowByIndex(0);
 
-    createButton(game, "> Start <", -1 , 300, [&game](){game.changeScene(game.scenes[1]);});
-    createButton(game, "Options", -1 , 400, [](){std::cout << "Options clicked!\n";});
-    createButton(game, "Exit", -1, 500, [](){std::cout << "Exit clicked!\n"; Game::isRunning = false;});
+    mainWindow->addTextArea(font,"Super Gra!",{20,20,20},{-1,50,350,100});
+    mainWindow->addButton(font,"assets/UI/btn.png","Play!",{-1,200,400,125},[&game](){game.changeScene(game.scenes[2]);});
+    mainWindow->addButton(font,"assets/UI/btn.png","Next!",{-1,350,400,125},[&game](){game.changeScene(game.scenes[1]);});
 };
 
 void UIScene1::onExit(Game &game) {
     UIScene::clear();
+    uiFrame->clean();
 }
 
-void UIScene1::update(Game &game) {}
+void UIScene1::update(Game &game) {
+    uiFrame->update();
+}
+
+void UIScene1::handleEvents(Game &game) {
+    uiFrame->handleEvents();
+}
+
 void UIScene1::render(Game &game) {
     SDL_SetRenderDrawColor(Game::renderer, 200, 200, 200, 255);
     SDL_RenderClear(game.renderer);
 
-    UIScene::render(game);
+    uiFrame->render();
 
     SDL_RenderPresent(game.renderer);
 }

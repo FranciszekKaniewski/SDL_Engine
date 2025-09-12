@@ -3,3 +3,4 @@
 #include "./Headers/MovementComponent.hpp"
 #include "./Headers/SpriteComponent.hpp"
 #include "./Headers/TransformComponent.hpp"
+#include "./Headers/Inventory.hpp"
