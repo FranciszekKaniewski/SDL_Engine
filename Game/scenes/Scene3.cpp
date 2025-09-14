@@ -49,29 +49,40 @@ void UIScene3::update(Game &game) {
 
     auto& colliders = manager.getGroup(Game::groupColliders);
 
+    float n = 0.0f;
+    float m = 0.0f;
     for(auto& c: colliders){
 
         SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
 
-        if(Collisions::AABB(cCol,playerCol)){
-            float n,m = 0;
-            float yDelta = (playerCol.y + playerCol.h/2)-(cCol.y + cCol.h/2);
-            float xDelta = (playerCol.x + playerCol.w/2)-(cCol.x + cCol.w/2);
+        if(Collisions::AABB(cCol, playerCol)) {
+
+            float xOverlap = 0;
+            if(playerCol.x < cCol.x) xOverlap = (playerCol.x + playerCol.w) - cCol.x;
+            else xOverlap = (cCol.x + cCol.w) - playerCol.x;
+
+            float yOverlap = 0;
+            if(playerCol.y < cCol.y) yOverlap = (playerCol.y + playerCol.h) - cCol.y;
+            else yOverlap = (cCol.y + cCol.h) - playerCol.y;
 
             float speed = player->getComponent<TransformComponent>().speed;
 
-            if(yDelta*yDelta <= xDelta*xDelta){
-                m = xDelta > 0 ? speed : speed*-1;
-                n = 0;
-            }else{
-                m = 0;
-                n= yDelta > 0 ? speed : speed*-1;
+            if(std::abs(xOverlap) < std::abs(yOverlap)) {
+                m = (playerCol.x + playerCol.w/2.0f < cCol.x + cCol.w/2.0f) ? -speed : speed;
+                n += 0;
+            } else {
+                m += 0;
+                n = (playerCol.y + playerCol.h/2.0f < cCol.y + cCol.h/2.0f) ? -speed : speed;
             }
-            Vector2D move(m,n);
-
-            player->getComponent<TransformComponent>().position = playerPos.Add(move);
         }
     }
+    if(n!= 0.0f || m != 0.0f){
+        Vector2D move(m,n);
+
+        player->getComponent<TransformComponent>().position = playerPos.Add(move);
+        playerPos.Bounce(move,0.025f,0.05f);
+    }
+    player->getComponent<TransformComponent>().position = playerPos.Update();
     //
 }
 

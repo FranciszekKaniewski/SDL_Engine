@@ -1,12 +1,12 @@
 #include "./Headers/Vector.hpp"
 
-Vector2D::Vector2D() {
+Vector2D::Vector2D(): inMotion(false) {
     x = 0.0f;
     y = 0.0f;
 }
 
 
-Vector2D::Vector2D(float x,float y) {
+Vector2D::Vector2D(float x,float y): inMotion(false) {
     this->x = x;
     this->y = y;
 }
@@ -35,6 +35,39 @@ Vector2D& Vector2D::Multiply(const Vector2D &vec) {
 Vector2D& Vector2D::Divide(const Vector2D &vec) {
     this->x /= vec.x;
     this->y /= vec.y;
+
+    return *this;
+}
+
+void Vector2D::Bounce(const Vector2D &descVec, float strength, float time) {
+    this->inMotion = true;
+    this->time = time;
+    this->moveX = descVec.x*strength;
+    this->moveY = descVec.y*strength;
+    this->speed = {this->moveX, this->moveY};
+    this->elapsed = 0;
+}
+
+Vector2D& Vector2D::Update() {
+    if(!inMotion) return *this;
+
+    elapsed += Game::deltaTime;
+    float progress = std::min(elapsed/time, 1.0f);
+
+    float factor = -(cos(M_PI * progress) - 1.0f) / 2.0f;
+
+    float nextX = (speed.x / time) * factor;
+    float nextY = (speed.y / time) * factor;
+
+    this->x += nextX;
+    this->y += nextY;
+    moveX -= nextX;
+    moveY -= nextY;
+
+    if(progress >= 1.0f){
+        inMotion = false;
+        speed = {0,0};
+    }
 
     return *this;
 }

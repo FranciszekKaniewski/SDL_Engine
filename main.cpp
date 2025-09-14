@@ -11,6 +11,7 @@ int main(int argv, char** args) {
     const int frameDelay = 1000 / FPS;
 
     Uint32 frameStart;
+    Uint32 lastTime = SDL_GetTicks();
     int frameTime;
 
     game = new Game;
@@ -26,8 +27,10 @@ int main(int argv, char** args) {
     game->changeScene(game->scenes[0]);
 
     while(game->running()) {
-
         frameStart = SDL_GetTicks();
+
+        Game::deltaTime = (frameStart - lastTime) / 1000.0f;
+        lastTime = frameStart;
 
         if (game->getCurrentScene()) {
             game->getCurrentScene()->handleEvents(*game);
