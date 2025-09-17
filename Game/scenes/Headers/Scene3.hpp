@@ -3,6 +3,8 @@
 #include "../../../Engine/ECS_Components/Components.hpp"
 #include "../../../Engine/Headers/UI/UIFrame.hpp"
 #include "../../../Engine/Headers/Collisions.hpp"
+#include "ItemCollisions.hpp"
+#include "Player_WallsCollision.hpp"
 
 class UIScene3 : public GameScene {
 public:

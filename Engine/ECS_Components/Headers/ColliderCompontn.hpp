@@ -52,6 +52,14 @@ public:
         destR = {collider.x,collider.y,collider.w,collider.h};
     }
 
+    void onEnter(){
+        std::cout<<"Entering!\n";
+    }
+
+    void onExit(){
+        std::cout<<"Exiting!\n";
+    }
+
     void update() override{
         if(tag != "terrain") {
             collider.x = static_cast<int>(transform->position.x)+x;

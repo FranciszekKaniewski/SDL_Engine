@@ -8,6 +8,7 @@
 #include "../SDL2/include/SDL2/SDL.h"
 #include "../SDL2/include/SDL2/SDL_image.h"
 #include "../Headers/Scene.hpp"
+#include "./ItemsManager.hpp"
 
 class ColliderComponent;
 
@@ -23,6 +24,8 @@ public:
 
     std::vector<Scene*> scenes;
     static float deltaTime;
+
+    static ItemsManager itemsManager;
 
     void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
 
@@ -49,7 +52,8 @@ public:
         groupMap,
         groupPlayers,
         groupEnemies,
-        groupColliders
+        groupColliders,
+        groupItems
     };
 
     void changeScene(Scene* newScene);

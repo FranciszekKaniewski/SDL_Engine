@@ -1,18 +1,18 @@
 #include "./Headers/Scene3.hpp"
 
 void UIScene3::onEnter(Game& game) {
-    font = Font("assets/fonts/Copyduck.otf", 32);
+    font = Font("assets/fonts/gT.otf", 32);
 
     uiFrame = new UIFrame(game);
     uiFrame->addWindow({-1,game.getWindowSize().height-100,55*5+10,60},"assets/UI/windowBG.png");
     Window* mainWindow = uiFrame->getWindowByIndex(0);
 
-    for(int i =0;i<5;i++){
-        mainWindow->addBox(font,"assets/UI/item-box.png","0",{i*55+5,-1,50,50},{0,0,0});
-    }
 
     Window* escWindow = uiFrame->addWindow({-1,-1,600,900},"assets/UI/windowBG.png",true);
     escWindow->addButton(font,"assets/UI/btn.png","Exit",{-1,100,400,150},[](){std::cout << "Exit clicked!\n"; Game::isRunning = false;});
+
+    Window* itemTextAreaWindow = uiFrame->addWindow({0,0,0,0},"assets/UI/btn.png",true);
+    itemTextAreaWindow->addTextArea(font,"Click E!",{255,255,255},{0,0,96,32});
 
     map = new Map("assets/til.png",2,32,manager);
     map->LoadMap("assets/map50x50.map",50,50);
@@ -23,7 +23,27 @@ void UIScene3::onEnter(Game& game) {
     player.addComponent<MovementComponent>();
     player.addComponent<ColliderComponent>("player",15*2,11*2+42,34*2,22*2);
     player.addComponent<Inventory>();
+    player.addComponent<ItemCollision>(uiFrame,manager.getGroup(Game::groupItems),player.getComponent<ColliderComponent>(),player.getComponent<Inventory>());
+    player.addComponent<Player_WallsCollisions>(player.getComponent<ColliderComponent>(), player.getComponent<TransformComponent>(),player.getComponent<TransformComponent>().speed , manager.getGroup(Game::groupColliders));
     player.addGroup(Game::groupPlayers);
+
+    for(int i =0;i<5;i++){
+        int count = player.getComponent<Inventory>().items[i].count;
+        std::string text = std::to_string(count);
+        mainWindow->addBox(font,"assets/UI/item-box.png",text,{i*55+5,-1,50,50},{0,0,0});
+    }
+
+    auto& item(manager.addEntity());
+    item.addComponent<TransformComponent>(200,200,64,64,1);
+    item.addComponent<SpriteComponent>("assets/items/Carrot.png",64);
+    item.addComponent<ColliderComponent>("Carrot",0,0,64);
+    item.addGroup(Game::groupItems);
+
+    auto& item2(manager.addEntity());
+    item2.addComponent<TransformComponent>(300,200,64,64,1);
+    item2.addComponent<SpriteComponent>("assets/items/Carrot2.png",64);
+    item2.addComponent<ColliderComponent>("Carrot2",0,0,64);
+    item2.addGroup(Game::groupItems);
 }
 
 void UIScene3::onExit(Game &game) {
@@ -43,47 +63,11 @@ void UIScene3::update(Game &game) {
     Game::camera.x = player->getComponent<TransformComponent>().position.x - game.getWindowSize().wight/2 + 64;
     Game::camera.y = player->getComponent<TransformComponent>().position.y - game.getWindowSize().height/2 + 64;
 
-    //COLLISONS
-    SDL_Rect playerCol = player->getComponent<ColliderComponent>().collider;
-    Vector2D playerPos = player->getComponent<TransformComponent>().position;
+    // Wall COLLISONS
+    player->getComponent<Player_WallsCollisions>().update();
 
-    auto& colliders = manager.getGroup(Game::groupColliders);
-
-    float n = 0.0f;
-    float m = 0.0f;
-    for(auto& c: colliders){
-
-        SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
-
-        if(Collisions::AABB(cCol, playerCol)) {
-
-            float xOverlap = 0;
-            if(playerCol.x < cCol.x) xOverlap = (playerCol.x + playerCol.w) - cCol.x;
-            else xOverlap = (cCol.x + cCol.w) - playerCol.x;
-
-            float yOverlap = 0;
-            if(playerCol.y < cCol.y) yOverlap = (playerCol.y + playerCol.h) - cCol.y;
-            else yOverlap = (cCol.y + cCol.h) - playerCol.y;
-
-            float speed = player->getComponent<TransformComponent>().speed;
-
-            if(std::abs(xOverlap) < std::abs(yOverlap)) {
-                m = (playerCol.x + playerCol.w/2.0f < cCol.x + cCol.w/2.0f) ? -speed : speed;
-                n += 0;
-            } else {
-                m += 0;
-                n = (playerCol.y + playerCol.h/2.0f < cCol.y + cCol.h/2.0f) ? -speed : speed;
-            }
-        }
-    }
-    if(n!= 0.0f || m != 0.0f){
-        Vector2D move(m,n);
-
-        player->getComponent<TransformComponent>().position = playerPos.Add(move);
-        playerPos.Bounce(move,0.025f,0.05f);
-    }
-    player->getComponent<TransformComponent>().position = playerPos.Update();
-    //
+    // Items COLLISONS
+    player->getComponent<ItemCollision>().update();
 }
 
 void UIScene3::handleEvents(Game &game) {
@@ -119,6 +103,10 @@ void UIScene3::render(Game &game) {
     auto& colliders = manager.getGroup(Game::groupColliders);
     for(auto& c : colliders){
         c->draw();
+    }
+    auto& items(manager.getGroup(Game::groupItems));
+    for(auto& i : items){
+        i->draw();
     }
     auto& players(manager.getGroup(Game::groupPlayers));
     for(auto& p : players){

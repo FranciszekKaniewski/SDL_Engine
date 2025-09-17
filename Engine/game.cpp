@@ -14,6 +14,7 @@ SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 SDL_Rect Game::camera = {0,0,1024,1024};
 float Game::deltaTime = 0.0f;
+ItemsManager Game::itemsManager;
 
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen){
     this->title = title;

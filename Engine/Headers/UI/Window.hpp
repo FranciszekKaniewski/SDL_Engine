@@ -5,14 +5,15 @@
 
 class Window{
 private:
-    SDL_Rect rect;
     SDL_Texture* texture;
     std::vector<TextAreaB*> textAreas;
     std::vector<ButtonB*> buttons;
     std::vector<BoxB*> boxes;
-    bool isClosed;
 
 public:
+    SDL_Rect rect;
+    bool isClosed;
+
     Window(SDL_Rect rect,const char* texturePath, bool isClosed=false): isClosed(isClosed){
         this->rect = rect;
         texture = TextureManager::LoadTexture(texturePath);
@@ -28,6 +29,22 @@ public:
             }else{
                 btn->setHover(false);
             }
+        }
+    }
+
+    void changeRect(int x, int y, int w, int h){
+        this->rect = {x, y, w, h};
+
+        for(TextAreaB* textArea : textAreas){
+            textArea->changeRect(x,y,w,h);
+        }
+
+        for(ButtonB* btn : buttons){
+            btn->changeRect(x,y,w,h);
+        }
+
+        for(BoxB* box : boxes){
+            box->changeRect(x,y,w,h);
         }
     }
 

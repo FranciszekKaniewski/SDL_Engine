@@ -21,17 +21,18 @@ private:
 public:
 
     int animIndex = 0;
+    const char* texturePath;
 
     std::map<const char*,Animation> animations;
 
     SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
 
     SpriteComponent() = default;
-    SpriteComponent(const char* path){
+    SpriteComponent(const char* path): texturePath(path){
         setTex(path);
     }
 
-    SpriteComponent(const char* path, bool isAnimated){
+    SpriteComponent(const char* path, bool isAnimated): texturePath(path){
         animated = isAnimated;
 
         Animation idle = Animation(0,2,300);
@@ -49,7 +50,7 @@ public:
         setTex(path);
     }
 
-    SpriteComponent(const char* path, int size){
+    SpriteComponent(const char* path, int size): texturePath(path){
         setTex(path);
         this->size = size;
     }

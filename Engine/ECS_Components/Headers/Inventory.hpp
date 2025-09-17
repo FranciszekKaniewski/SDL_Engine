@@ -1,12 +1,26 @@
 #pragma once
+#include "map"
+#include "../../Headers/ItemsManager.hpp"
+
+struct ItemStack {
+    Item item;
+    int count;
+};
 
 class Inventory : public Component {
 private:
 public:
     int selectIndex = 0;
-    int items[5];
+    const int size = 5;
+    ItemStack items[5];
 
     void init() override{
+        for (int i = 0; i < size; i++) {
+            items[i].item.name = nullptr;
+            items[i].item.imgPath = nullptr;
+            items[i].item.type = ITEM;
+            items[i].count = 0;
+        }
     }
 
     void handleEvents(){
@@ -27,7 +41,25 @@ public:
                 case SDLK_5:
                     selectIndex = 4;
                     break;
-                }
             }
         }
+    }
+
+    int addItem(Item item){
+        for(int i=0;i<size;i++){
+            if(items[i].item.name == item.name){
+                items[i].count ++;
+                return i;
+            }
+        }
+        for(int i=0;i<size;i++){
+            if(!items[i].item.name || strcmp(items[i].item.name, "null") == 0) {
+                items[i].count = 1;
+                items[i].item = item;
+                return i;
+            }
+        }
+
+        return -1;
+    }
 };
