@@ -44,6 +44,12 @@ void UIScene3::onEnter(Game& game) {
     item2.addComponent<SpriteComponent>("assets/items/Carrot2.png",64);
     item2.addComponent<ColliderComponent>("Carrot2",0,0,64);
     item2.addGroup(Game::groupItems);
+
+    auto& item3(manager.addEntity());
+    item3.addComponent<TransformComponent>(400,200,64,64,1);
+    item3.addComponent<SpriteComponent>("assets/items/Carrot.png",64);
+    item3.addComponent<ColliderComponent>("Carrot",0,0,64);
+    item3.addGroup(Game::groupItems);
 }
 
 void UIScene3::onExit(Game &game) {
