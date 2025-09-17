@@ -74,6 +74,8 @@ public:
     }
 
     void showTextAre(SDL_Rect itemColliderRect){
-        w->changeRect(itemColliderRect.x - Game::camera.x - w->rect.w/2 + itemColliderRect.w/2,itemColliderRect.y - Game::camera.y - 32,96,32);
+        int xCam = Game::camera.x;
+        int yCam = Game::camera.y;
+        w->changeRect(itemColliderRect.x - xCam - w->rect.w/2 + itemColliderRect.w/2,itemColliderRect.y - yCam - 32,96,32);
     }
 };
