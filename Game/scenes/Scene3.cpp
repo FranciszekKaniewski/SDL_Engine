@@ -25,6 +25,7 @@ void UIScene3::onEnter(Game& game) {
     player.addComponent<Inventory>();
     player.addComponent<ItemCollision>(uiFrame,manager.getGroup(Game::groupItems),player.getComponent<ColliderComponent>(),player.getComponent<Inventory>());
     player.addComponent<Player_WallsCollisions>(player.getComponent<ColliderComponent>(), player.getComponent<TransformComponent>(),player.getComponent<TransformComponent>().speed , manager.getGroup(Game::groupColliders));
+    player.addComponent<HoldingComponent>();
     player.addGroup(Game::groupPlayers);
 
     for(int i =0;i<5;i++){
@@ -50,6 +51,12 @@ void UIScene3::onEnter(Game& game) {
     item3.addComponent<SpriteComponent>("assets/items/Carrot.png",64);
     item3.addComponent<ColliderComponent>("Carrot",0,0,64);
     item3.addGroup(Game::groupItems);
+
+    auto& axe(manager.addEntity());
+    axe.addComponent<TransformComponent>(200,300,64,64,1);
+    axe.addComponent<SpriteComponent>("assets/items/axe.png",64);
+    axe.addComponent<ColliderComponent>("Axe",0,0,64);
+    axe.addGroup(Game::groupItems);
 }
 
 void UIScene3::onExit(Game &game) {

@@ -59,7 +59,7 @@ public:
 
     void pickUpItem(ColliderComponent& itemCollider, const char* texturePath){
         const char* x = itemCollider.tag.c_str();
-        Item i = Game::itemsManager.getItemByName(x);
+        Item* i = Game::itemsManager.getItemByName(x);
         int spot = inventory.addItem(i);
 
         if(spot != -1){

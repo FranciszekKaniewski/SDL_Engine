@@ -26,6 +26,8 @@ int main(int argv, char** args) {
     game->scenes.push_back(c);
     game->changeScene(game->scenes[0]);
 
+    Game::itemsManager = ItemsManager();
+
     while(game->running()) {
         frameStart = SDL_GetTicks();
 

@@ -1,6 +1,7 @@
+#include "./Headers/Inventory.hpp"
+#include "./Headers/HoldingComponent.hpp"
 #include "./Headers/TileComponent.hpp"
 #include "./Headers/ColliderCompontn.hpp"
 #include "./Headers/MovementComponent.hpp"
 #include "./Headers/SpriteComponent.hpp"
 #include "./Headers/TransformComponent.hpp"
-#include "./Headers/Inventory.hpp"

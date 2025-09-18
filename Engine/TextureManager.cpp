@@ -1,4 +1,5 @@
 #include "./Headers/TextureManager.hpp"
+#include "./Headers/game.h"
 
 SDL_Texture* TextureManager::LoadTexture(const char *fileName) {
 

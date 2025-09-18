@@ -1,9 +1,10 @@
 #pragma once
 #include "map"
 #include "../../Headers/ItemsManager.hpp"
+#include "../Components.hpp"
 
 struct ItemStack {
-    Item item;
+    Item* item;
     int count;
 };
 
@@ -16,9 +17,7 @@ public:
 
     void init() override{
         for (int i = 0; i < size; i++) {
-            items[i].item.name = nullptr;
-            items[i].item.imgPath = nullptr;
-            items[i].item.type = ITEM;
+            items[i].item = new Item("none","none",NONE);
             items[i].count = 0;
         }
     }
@@ -27,33 +26,33 @@ public:
         if (Game::event.type == SDL_KEYDOWN) {
             switch (Game::event.key.keysym.sym) {
                 case SDLK_1:
-                    selectIndex = 0;
+                    getItem(0);
                     break;
                 case SDLK_2:
-                    selectIndex = 1;
+                    getItem(1);
                     break;
                 case SDLK_3:
-                    selectIndex = 2;
+                    getItem(2);
                     break;
                 case SDLK_4:
-                    selectIndex = 3;
+                    getItem(3);
                     break;
                 case SDLK_5:
-                    selectIndex = 4;
+                    getItem(4);
                     break;
             }
         }
     }
 
-    int addItem(Item item){
+    int addItem(Item* item){
         for(int i=0;i<size;i++){
-            if(items[i].item.name == item.name){
+            if(strcmp(items[i].item->name, item->name) == 0){
                 items[i].count ++;
                 return i;
             }
         }
         for(int i=0;i<size;i++){
-            if(!items[i].item.name || strcmp(items[i].item.name, "null") == 0) {
+            if(!items[i].item->name || strcmp(items[i].item->name, "none") == 0) {
                 items[i].count = 1;
                 items[i].item = item;
                 return i;
@@ -61,5 +60,15 @@ public:
         }
 
         return -1;
+    }
+
+    void getItem(int i){
+        selectIndex = i;
+        if(!items[i].item->name || strcmp(items[i].item->name, "none") == 0){
+            this->entity->getComponent<HoldingComponent>().deleteItem();
+        }
+        else{
+            this->entity->getComponent<HoldingComponent>().addItem(items[i].item);
+        }
     }
 };

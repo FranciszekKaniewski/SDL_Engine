@@ -1,5 +1,4 @@
 #pragma once
-#include "./game.h"
 #include "Font.hpp"
 
 class TextureManager{
