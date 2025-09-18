@@ -48,6 +48,7 @@ public:
         for(int i=0;i<size;i++){
             if(strcmp(items[i].item->name, item->name) == 0){
                 items[i].count ++;
+                getItem(selectIndex);
                 return i;
             }
         }
@@ -55,6 +56,7 @@ public:
             if(!items[i].item->name || strcmp(items[i].item->name, "none") == 0) {
                 items[i].count = 1;
                 items[i].item = item;
+                getItem(selectIndex);
                 return i;
             }
         }
