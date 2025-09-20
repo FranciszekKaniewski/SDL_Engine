@@ -1,5 +1,6 @@
 #pragma once
 #include "vector"
+#include <algorithm>
 #include "./Window.hpp"
 
 class UIFrame{
@@ -44,6 +45,17 @@ public:
         Window* window = new Window(rect,texturePath,isClosed);
         windows.push_back(window);
         return window;
+    }
+
+    void removeWindow(Window* window) {
+        if(!window) return;
+
+        auto it = std::find(windows.begin(), windows.end(), window);
+        if(it != windows.end()){
+            (*it)->clean();
+            delete *it;
+            windows.erase(it);
+        }
     }
 
     Window* getWindowByIndex(int index){

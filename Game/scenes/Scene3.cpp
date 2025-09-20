@@ -26,6 +26,8 @@ void UIScene3::onEnter(Game& game) {
     player.addComponent<ItemCollision>(uiFrame,manager.getGroup(Game::groupItems),player.getComponent<ColliderComponent>(),player.getComponent<Inventory>());
     player.addComponent<Player_WallsCollisions>(player.getComponent<ColliderComponent>(), player.getComponent<TransformComponent>(),player.getComponent<TransformComponent>().speed , manager.getGroup(Game::groupColliders));
     player.addComponent<HoldingComponent>();
+    player.addComponent<HpComponent>(20);
+    player.addComponent<UIComponent>(uiFrame);
     player.addGroup(Game::groupPlayers);
 
     for(int i =0;i<5;i++){
@@ -57,6 +59,12 @@ void UIScene3::onEnter(Game& game) {
     axe.addComponent<SpriteComponent>("assets/items/axe.png",64);
     axe.addComponent<ColliderComponent>("Axe",0,0,64);
     axe.addGroup(Game::groupItems);
+
+    auto& fireCamp(manager.addEntity());
+    fireCamp.addComponent<TransformComponent>(300,300,64,64,1);
+    fireCamp.addComponent<SpriteComponent>("assets/objects/fire-camp.png",true);
+    fireCamp.addComponent<ColliderComponent>("fire-camp",0,0,64);
+    fireCamp.addGroup(Game::groupColliders);
 }
 
 void UIScene3::onExit(Game &game) {

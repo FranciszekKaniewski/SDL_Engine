@@ -18,6 +18,12 @@ private:
     int speed = 100;
     int size = 64;
 
+    bool blinking = false;
+    float blinkTimer = 0.0f;
+    float blinkInterval = 0.1f;
+    float blinkAccumulator = 0.0f;
+    bool blinkVisible = true;
+
 public:
 
     int animIndex = 0;
@@ -86,14 +92,39 @@ public:
         destRect.y = static_cast<int>(transform->position.y) - Game::camera.y;
         destRect.w = transform->width * transform->scale;
         destRect.h = transform->height * transform->scale;
+
+        if (blinking) {
+            blinkTimer -= Game::deltaTime;
+            blinkAccumulator += Game::deltaTime;
+
+            if (blinkAccumulator >= blinkInterval) {
+                blinkAccumulator = 0.0f;
+                blinkVisible = !blinkVisible;
+            }
+
+            if (blinkTimer <= 0.0f) {
+                blinking = false;
+                blinkVisible = true;
+            }
+        }
     }
     void draw() override{
-        TextureManager::Draw(texture,srcRect,destRect,spriteFlip);
+        if (!blinking || blinkVisible) {
+            TextureManager::Draw(texture, srcRect, destRect, spriteFlip);
+        }
     }
 
     void Play(const char* animName){
         frames = animations[animName].frames;
         animIndex = animations[animName].index;
         speed = animations[animName].speed;
+    }
+
+    void StartBlinking(float duration, float interval = 0.1f) {
+        blinking = true;
+        blinkTimer = duration;
+        blinkInterval = interval;
+        blinkAccumulator = 0.0f;
+        blinkVisible = true;
     }
 };

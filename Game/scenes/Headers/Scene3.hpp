@@ -5,6 +5,7 @@
 #include "../../../Engine/Headers/Collisions.hpp"
 #include "../../scripts/ItemCollisions.hpp"
 #include "../../scripts/Player_WallsCollision.hpp"
+#include "../../../Engine/ECS_Components/Headers/HP_Component.hpp"
 
 class UIScene3 : public GameScene {
 public:
