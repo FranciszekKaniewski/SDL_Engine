@@ -14,6 +14,7 @@ ECS_H_FILES := ./Engine/ECS_Components/
 ECS_SPEC_H_FILES := ./Engine/ECS_Components/Headers/
 
 GAME_H_FILES := ./Game/scenes/Headers/
+GAME_SCRIPTS_FILES := ./Game/scripts/Headers/
 
 GENERAL_CPP_FILES := $(wildcard ./Engine/*.cpp)
 SPEC_CPP_FILES := $(wildcard ./Engine/*/*.cpp)
@@ -27,7 +28,7 @@ build:
 	if not exist build mkdir build
 	if not exist "build\assets" mkdir "build\assets"
 	xcopy /E /I /H /Y "Game\assets\" "build\assets\"
-	g++ -I $(INCLUDE_DIR) -I $(GENERAL_H_FILES) -I $(GAME_H_FILES) -I $(SPEC_H_FILES) -I $(ECS_H_FILES) -I $(ECS_SPEC_H_FILES)  -L $(LIB_DIR) -o ./build/$(OUT_NAME) $(GENERAL_CPP_FILES) $(SPEC_CPP_FILES) $(GAME_CPP_FILES) $(MAIN_CPP_FILES) $(DLL_FILES)
+	g++ -I $(INCLUDE_DIR) -I $(GENERAL_H_FILES) -I $(GAME_H_FILES) -I $(SPEC_H_FILES) -I $(ECS_H_FILES) -I $(ECS_SPEC_H_FILES) -I $(GAME_SCRIPTS_FILES) -L $(LIB_DIR) -o ./build/$(OUT_NAME) $(GENERAL_CPP_FILES) $(SPEC_CPP_FILES) $(GAME_CPP_FILES) $(MAIN_CPP_FILES) $(DLL_FILES)
 
 run:
 	@echo "Executing..."

@@ -1,7 +1,7 @@
-#include "../../../Engine/ECS_Components/Components.hpp"
-#include "../../../Engine/Headers/Collisions.hpp"
-#include "../../../Engine/Headers/game.h"
-#include "../../../Engine/Headers/UI/UIFrame.hpp"
+#include "../../Engine/ECS_Components/Components.hpp"
+#include "../../Engine/Headers/Collisions.hpp"
+#include "../../Engine/Headers/game.h"
+#include "../../Engine/Headers/UI/UIFrame.hpp"
 
 #include "unordered_map"
 
