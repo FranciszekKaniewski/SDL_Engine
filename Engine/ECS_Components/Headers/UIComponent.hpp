@@ -37,8 +37,8 @@ public:
         SDL_Rect rect = {(int)objPos.x - Game::camera.x + 32 + randomValueW,(int)objPos.y - Game::camera.y + randomValueH,32,32};
 
         Font font = Font("assets/fonts/Born2bSportyFS.otf", 32);
-        tmpWindow = uiFrame->addWindow(rect,"assets/UI/windowBG.png");
-        tmpWindow->addTextArea(font,text,{150,90,90},{0,0,32,32});
+        tmpWindow = uiFrame->addWindow(rect,"none");
+        tmpWindow->addTextArea(font,text,{220,110,110},{0,0,32,32});
         windowTimer = 2.0f;
     }
 };

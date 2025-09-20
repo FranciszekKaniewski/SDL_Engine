@@ -58,7 +58,7 @@ public:
     void draw(){
         if(isClosed) return;
 
-        SDL_RenderCopy(Game::renderer, texture, nullptr, &rect);
+        if(texture) SDL_RenderCopy(Game::renderer, texture, nullptr, &rect);
         for(TextAreaB* textArea : textAreas){
             textArea->draw();
         }

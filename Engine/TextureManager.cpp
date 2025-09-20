@@ -2,6 +2,7 @@
 #include "./Headers/game.h"
 
 SDL_Texture* TextureManager::LoadTexture(const char *fileName) {
+    if(strcmp(fileName, "none") == 0) return nullptr;
 
     SDL_Surface* tempSurface = IMG_Load(fileName);
     SDL_Texture* tex = SDL_CreateTextureFromSurface(Game::renderer,tempSurface);
