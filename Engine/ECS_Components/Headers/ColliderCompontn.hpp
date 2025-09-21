@@ -27,9 +27,9 @@ public:
 
     ColliderComponent(std::string t,int xpos,int ypos,int size){
         tag = t;
-        collider.x = xpos;
-        collider.y = ypos;
-        collider.h = collider.w = size;
+        collider.x = x = xpos;
+        collider.y = y = ypos;
+        collider.w = collider.h = size;
     }
 
     ColliderComponent(std::string t,int xpos,int ypos,int w, int h){
