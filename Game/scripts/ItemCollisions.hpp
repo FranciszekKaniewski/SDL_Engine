@@ -28,7 +28,7 @@ public:
         for(auto& c: itemsEntities){
             auto& itemCollider = c->getComponent<ColliderComponent>();
 
-            bool in = Collisions::AABB(itemCollider.collider, playerCollider.collider);
+            bool in = Collisions::CheckCollision(itemCollider, playerCollider);
             bool prev = prevCollStates[itemCollider.tag];
 
             if(in && !prev){

@@ -21,7 +21,7 @@ void UIScene3::onEnter(Game& game) {
     player.addComponent<TransformComponent>(100,100,64,64,2);
     player.addComponent<SpriteComponent>("assets/Imgs/character-sprite.png",true);
     player.addComponent<MovementComponent>();
-    player.addComponent<ColliderComponent>("player",15*2,11*2+42,34*2,22*2);
+    player.addComponent<ColliderComponent>("player",32*2,32*2+20,20,CIRCLE);
     player.addComponent<Inventory>();
     player.addComponent<ItemCollision>(uiFrame,manager.getGroup(Game::groupItems),player.getComponent<ColliderComponent>(),player.getComponent<Inventory>());
     player.addComponent<Player_WallsCollisions>(player.getComponent<ColliderComponent>(), player.getComponent<TransformComponent>(),player.getComponent<TransformComponent>().speed , manager.getGroup(Game::groupColliders));

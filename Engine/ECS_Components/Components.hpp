@@ -2,7 +2,7 @@
 #include "./Headers/Inventory.hpp"
 #include "./Headers/HoldingComponent.hpp"
 #include "./Headers/TileComponent.hpp"
-#include "./Headers/ColliderCompontn.hpp"
+#include "./Headers/ColliderComponent.hpp"
 #include "./Headers/MovementComponent.hpp"
 #include "./Headers/SpriteComponent.hpp"
 #include "./Headers/UIComponent.hpp"
