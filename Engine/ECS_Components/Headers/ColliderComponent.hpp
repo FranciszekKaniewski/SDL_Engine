@@ -103,7 +103,7 @@ public:
 
     void draw() override{
         if (type == ColliderType::RECT) {
-            TextureManager::Draw(tex, srcR, destR, SDL_FLIP_NONE);
+            TextureManager::DrawSquare(collider.x- Game::camera.x,collider.y- Game::camera.y,64,{255,0,0,255});
         } else if(type == CIRCLE) {
             TextureManager::DrawCircle(circleCollider.x - Game::camera.x,
                                        circleCollider.y - Game::camera.y,

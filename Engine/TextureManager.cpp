@@ -24,6 +24,18 @@ void TextureManager::Draw(SDL_Texture *tex, SDL_Rect src, SDL_Rect dest, SDL_Ren
     SDL_RenderCopyEx(Game::renderer,tex,&src,&dest,0,nullptr,flip);
 }
 
+void TextureManager::DrawSquare(int x, int y, int size, SDL_Color color) {
+    SDL_SetRenderDrawColor(Game::renderer, color.r, color.g, color.b, color.a);
+
+    SDL_Rect square;
+    square.x = x;
+    square.y = y;
+    square.w = size;
+    square.h = size;
+
+    SDL_RenderDrawRect(Game::renderer, &square);
+}
+
 void TextureManager::DrawCircle(int centreX, int centreY, int radius, SDL_Color color) {
     SDL_SetRenderDrawColor(Game::renderer, color.r, color.g, color.b, color.a);
 
