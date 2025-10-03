@@ -14,7 +14,7 @@ void UIScene3::onEnter(Game& game) {
     Window* itemTextAreaWindow = uiFrame->addWindow({0,0,0,0},"assets/UI/btn.png",true);
     itemTextAreaWindow->addTextArea(font,"Click E!",{255,255,255},{0,0,96,32});
 
-    map = new Map("assets/til.png",2,32,manager);
+    map = new Map("assets/tilemap.png",1,64,manager);
     map->LoadMap("assets/map50x50.map",50,50);
 
     auto& player(manager.addEntity());
