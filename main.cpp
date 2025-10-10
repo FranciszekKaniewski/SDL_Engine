@@ -7,6 +7,7 @@ Game *game = nullptr;
 
 int main(int argv, char** args) {
 
+    bool FPSLimit = true;
     const int FPS = 60;
     const int frameDelay = 1000 / FPS;
 
@@ -34,16 +35,16 @@ int main(int argv, char** args) {
         Game::deltaTime = (frameStart - lastTime) / 1000.0f;
         lastTime = frameStart;
 
+        game->handleEvents();
         if (game->getCurrentScene()) {
             game->getCurrentScene()->handleEvents(*game);
             game->getCurrentScene()->update(*game);
             game->getCurrentScene()->render(*game);
         }
-        game->handleEvents();
 
         frameTime = SDL_GetTicks() - frameStart;
 
-        if(frameDelay > frameTime){
+        if(frameDelay > frameTime && FPSLimit){
             SDL_Delay(frameDelay - frameTime);
         }
     }

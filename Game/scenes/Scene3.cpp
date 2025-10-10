@@ -112,6 +112,8 @@ void UIScene3::handleEvents(Game &game) {
     }
     uiFrame->getWindowByIndex(0)->getBoxById(player->getComponent<Inventory>().selectIndex)->setSelected(true);
     //
+
+    player->getComponent<ItemCollision>().handleInteraction();
 }
 
 void UIScene3::render(Game &game) {

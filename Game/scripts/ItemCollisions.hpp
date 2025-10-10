@@ -13,6 +13,7 @@ public:
     std::vector<Entity*>& itemsEntities;
     ColliderComponent& playerCollider;
     Inventory& inventory;
+    Entity* itemInColl = nullptr;
 
     ItemCollision(UIFrame* uiFrame, std::vector<Entity*>& itemsEntities, ColliderComponent& playerCollider, Inventory& inventory):
         uiFrame(uiFrame), w(uiFrame->getWindowByIndex(2)), itemsEntities(itemsEntities), playerCollider(playerCollider), inventory(inventory) {}
@@ -41,18 +42,20 @@ public:
             prevCollStates[itemCollider.tag] = in;
 
             if(in) anyIn = true;
-            if(in) handleInteraction(c);
+            if(in) itemInColl = c;
         }
 
+        if(!anyIn) itemInColl = nullptr;
         uiFrame->getWindowByIndex(2)->isClosed = !anyIn;
         if(!anyIn && w->rect.h != 0) w->changeRect(0,0,0,0);
     }
 
-    void handleInteraction(Entity* item){
+    void handleInteraction(){
+        if(!itemInColl) return;
         if (Game::event.type == SDL_KEYDOWN){
             if(Game::event.key.keysym.sym == SDLK_e){
-                pickUpItem(item->getComponent<ColliderComponent>(),item->getComponent<SpriteComponent>().texturePath);
-                item->destroy();
+                pickUpItem(itemInColl->getComponent<ColliderComponent>(),itemInColl->getComponent<SpriteComponent>().texturePath);
+                itemInColl->destroy();
             }
         }
     }

@@ -14,8 +14,6 @@ public:
     void update() {}
 
     void handleEvents(){
-        SDL_PollEvent(&Game::event);
-
         int x, y;
         SDL_GetMouseState(&x, &y);
 

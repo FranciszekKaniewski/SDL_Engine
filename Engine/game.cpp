@@ -48,12 +48,16 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 }
 
 void Game::handleEvents() {
-    SDL_PollEvent(&event);
+    while(SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_QUIT:
+                isRunning = false;
+                break;
+        }
 
-    switch (event.type) {
-        case SDL_QUIT:
-            isRunning = false;
-            break;
+        if (currentScene) {
+            currentScene->handleEvents(*this);
+        }
     }
 }
 
