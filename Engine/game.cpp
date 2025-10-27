@@ -15,6 +15,7 @@ SDL_Event Game::event;
 SDL_Rect Game::camera = {0,0,1024,1024};
 float Game::deltaTime = 0.0f;
 ItemsManager Game::itemsManager;
+Audio Game::audio;
 
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen){
     this->title = title;
@@ -39,6 +40,14 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         }
         if (TTF_Init() == -1) {
             std::cerr << "TTF_Init error: " << TTF_GetError() << std::endl;
+            return;
+        }
+        if (Mix_Init(MIX_INIT_MP3) == 0) {
+            std::cerr << "Mix_Init Error: " << Mix_GetError() << std::endl;
+            return;
+        }
+        if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
+            std::cerr << "Mix_OpenAudio Error: " << Mix_GetError() << std::endl;
             return;
         }
         isRunning = true;

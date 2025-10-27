@@ -65,6 +65,9 @@ void UIScene3::onEnter(Game& game) {
     fireCamp.addComponent<SpriteComponent>("assets/objects/fire-camp.png",true);
     fireCamp.addComponent<ColliderComponent>("fire-camp",0,0,64);
     fireCamp.addGroup(Game::groupColliders);
+
+    int x = Game::audio.addSong("assets/sounds/soundtrack.mp3");
+    Game::audio.playMusic(x);
 }
 
 void UIScene3::onExit(Game &game) {

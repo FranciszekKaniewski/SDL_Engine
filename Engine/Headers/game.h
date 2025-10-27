@@ -9,6 +9,7 @@
 #include "../SDL2/include/SDL2/SDL_image.h"
 #include "../Headers/Scene.hpp"
 #include "./ItemsManager.hpp"
+#include "./Audio.hpp"
 
 class ColliderComponent;
 
@@ -49,6 +50,7 @@ public:
 
     static SDL_Renderer *renderer;
     static SDL_Event event;
+    static Audio audio;
 
     static bool isRunning;
 
