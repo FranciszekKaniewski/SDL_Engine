@@ -17,6 +17,12 @@ struct WindowSize {
     int height;
 };
 
+struct GameSettings{
+    bool FPSLimit = true;
+    int maxFPS = 144;
+    WindowSize windowSize = {1920,1080};
+};
+
 class Game {
 public:
     Game();
@@ -58,6 +64,9 @@ public:
 
     void changeScene(Scene* newScene);
     Scene* getCurrentScene() const { return currentScene; }
+
+    int currentFPS = 0;
+    GameSettings gameSettings;
 private:
 
     int cnt = 0;

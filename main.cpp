@@ -7,17 +7,11 @@ Game *game = nullptr;
 
 int main(int argv, char** args) {
 
-    bool FPSLimit = true;
-    const int FPS = 60;
-    const int frameDelay = 1000 / FPS;
-
     Uint32 frameStart;
     Uint32 lastTime = SDL_GetTicks();
-    int frameTime;
 
     game = new Game;
-
-    game->init("Super Game", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,1920,1080,false);
+    game->init("Super Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, game->gameSettings.windowSize.wight, game->gameSettings.windowSize.height, false);
 
     Scene* a = new UIScene1;
     Scene* b = new UIScene2;
@@ -29,27 +23,51 @@ int main(int argv, char** args) {
 
     Game::itemsManager = ItemsManager();
 
-    while(game->running()) {
-        frameStart = SDL_GetTicks();
+    int frames = 0;
+    Uint32 fpsTimer = SDL_GetTicks();
+    game->currentFPS = 0;
 
-        Game::deltaTime = (frameStart - lastTime) / 1000.0f;
+    const int FIXED_FPS = 60;
+    const float MS_PER_UPDATE = 1000.0f / FIXED_FPS;
+    float lag = 0.0f;
+
+    while (game->running()) {
+        frameStart = SDL_GetTicks();
+        float elapsed = frameStart - lastTime;
         lastTime = frameStart;
+        lag += elapsed;
 
         game->handleEvents();
         if (game->getCurrentScene()) {
             game->getCurrentScene()->handleEvents(*game);
-            game->getCurrentScene()->update(*game);
+        }
+
+        while (lag >= MS_PER_UPDATE) {
+            Game::deltaTime = MS_PER_UPDATE / 1000.0f;
+            if (game->getCurrentScene()) {
+                game->getCurrentScene()->update(*game);
+            }
+            lag -= MS_PER_UPDATE;
+        }
+
+        if (game->getCurrentScene()) {
             game->getCurrentScene()->render(*game);
         }
 
-        frameTime = SDL_GetTicks() - frameStart;
+        Uint32 frameTimeMs = SDL_GetTicks() - frameStart;
+        if (game->gameSettings.FPSLimit && frameTimeMs < (1000 / game->gameSettings.maxFPS)) {
+            SDL_Delay((1000 / game->gameSettings.maxFPS) - frameTimeMs);
+        }
 
-        if(frameDelay > frameTime && FPSLimit){
-            SDL_Delay(frameDelay - frameTime);
+        frames++;
+        if (SDL_GetTicks() - fpsTimer >= 1000) {
+            game->currentFPS = frames;
+            frames = 0;
+            fpsTimer += 1000;
         }
     }
 
     game->clean();
-
     return 0;
 }
+
