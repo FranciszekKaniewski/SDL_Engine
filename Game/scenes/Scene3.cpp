@@ -1,5 +1,15 @@
 #include "./Headers/Scene3.hpp"
 
+void UIScene3::createItem(const char* path, const std::string& tag, int x, int y) {
+    auto& item(manager.addEntity());
+
+    item.addComponent<TransformComponent>(x, y, 64, 64, 1);
+    item.addComponent<SpriteComponent>(path, 64);
+    item.addComponent<ColliderComponent>(tag, 0, 0, 64);
+
+    item.addGroup(Game::groupItems);
+}
+
 void UIScene3::onEnter(Game& game) {
     font = Font("assets/fonts/gT.otf", 32);
 
@@ -39,35 +49,13 @@ void UIScene3::onEnter(Game& game) {
         inventoryWindow->addBox(font,"assets/UI/item-box.png",text,{i*55+5,-1,50,50},{0,0,0});
     }
 
-    auto& item(manager.addEntity());
-    item.addComponent<TransformComponent>(200,200,64,64,1);
-    item.addComponent<SpriteComponent>("assets/items/Carrot.png",64);
-    item.addComponent<ColliderComponent>("Carrot",0,0,64);
-    item.addGroup(Game::groupItems);
+    // Tworzenie marchewek
+    createItem("assets/items/Carrot.png",  "Carrot",  200, 200);
+    createItem("assets/items/Carrot2.png", "Carrot2", 300, 200);
+    createItem("assets/items/Carrot.png",  "Carrot",  400, 200);
 
-    auto& item2(manager.addEntity());
-    item2.addComponent<TransformComponent>(300,200,64,64,1);
-    item2.addComponent<SpriteComponent>("assets/items/Carrot2.png",64);
-    item2.addComponent<ColliderComponent>("Carrot2",0,0,64);
-    item2.addGroup(Game::groupItems);
-
-    auto& item3(manager.addEntity());
-    item3.addComponent<TransformComponent>(400,200,64,64,1);
-    item3.addComponent<SpriteComponent>("assets/items/Carrot.png",64);
-    item3.addComponent<ColliderComponent>("Carrot",0,0,64);
-    item3.addGroup(Game::groupItems);
-
-    auto& axe(manager.addEntity());
-    axe.addComponent<TransformComponent>(200,300,64,64,1);
-    axe.addComponent<SpriteComponent>("assets/items/axe.png",64);
-    axe.addComponent<ColliderComponent>("Axe",0,0,64);
-    axe.addGroup(Game::groupItems);
-
-    auto& fireCamp(manager.addEntity());
-    fireCamp.addComponent<TransformComponent>(300,300,64,64,1);
-    fireCamp.addComponent<SpriteComponent>("assets/objects/fire-camp.png",true);
-    fireCamp.addComponent<ColliderComponent>("fire-camp",32,32,20,CIRCLE);
-    fireCamp.addGroup(Game::groupColliders);
+    // Tworzenie topora
+    createItem("assets/items/axe.png", "Axe", 200, 300);
 
     int x = Game::audio.addSong("assets/sounds/soundtrack.mp3");
     Game::audio.playMusic(x);

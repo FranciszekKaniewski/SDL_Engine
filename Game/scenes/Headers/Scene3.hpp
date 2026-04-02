@@ -27,4 +27,7 @@ public:
     void update(Game& game) override;
     void handleEvents(Game& game) override;
     void render(Game& game) override;
+
+    //helpers
+    void createItem(const char* path, const std::string& tag, int x, int y);
 };
