@@ -69,6 +69,7 @@ public:
 
     int currentFPS = 0;
     GameSettings gameSettings;
+    static bool devMode;
 private:
 
     int cnt = 0;

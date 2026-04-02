@@ -4,15 +4,15 @@ void UIScene3::onEnter(Game& game) {
     font = Font("assets/fonts/gT.otf", 32);
 
     uiFrame = new UIFrame(game);
-    uiFrame->addWindow({-1,game.getWindowSize().height-100,55*5+10,60},"assets/UI/windowBG.png");
-    Window* mainWindow = uiFrame->getWindowByIndex(0);
-
-
-    Window* escWindow = uiFrame->addWindow({-1,-1,600,900},"assets/UI/windowBG.png",true);
+    mainWindow = uiFrame->addWindow({-1,game.getWindowSize().height-100,55*5+10,60},"assets/UI/windowBG.png");
+    escWindow = uiFrame->addWindow({-1,-1,600,900},"assets/UI/windowBG.png",true);
     escWindow->addButton(font,"assets/UI/btn.png","Exit",{-1,100,400,150},[](){std::cout << "Exit clicked!\n"; Game::isRunning = false;});
 
     Window* itemTextAreaWindow = uiFrame->addWindow({0,0,0,0},"assets/UI/btn.png",true);
     itemTextAreaWindow->addTextArea(font,"Click E!",{255,255,255},{0,0,96,32});
+
+    devWindow = uiFrame->addWindow({5,5,200,60},"assets/UI/windowBG.png",true);
+    devWindow->addTextArea(font,"FPS: 0",{0,255,0},{5,5,190,50});
 
     map = new Map("assets/tilemap.png",1,64,manager);
     map->LoadMap("assets/map50x50.map",50,50);
@@ -100,7 +100,7 @@ void UIScene3::handleEvents(Game &game) {
     //ESC
     if (Game::event.type == SDL_KEYDOWN){
         if(Game::event.key.keysym.sym == SDLK_ESCAPE){
-            uiFrame->getWindowByIndex(1)->toggle();
+            escWindow->toggle();
         }
     }
     //
@@ -174,6 +174,11 @@ void UIScene3::render(Game &game) {
 
     for (auto& e : renderables) {
         e->draw();
+    }
+
+    devWindow->isClosed = !Game::devMode;
+    if (Game::devMode) {
+        devWindow->getTextAreaById(0)->updateText("FPS: " + std::to_string(game.currentFPS));
     }
 
     uiFrame->render();

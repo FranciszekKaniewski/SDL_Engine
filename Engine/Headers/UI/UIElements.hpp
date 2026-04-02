@@ -26,6 +26,11 @@ public:
         this->rect = {x, y, w, h};
     }
 
+    void updateText(const std::string& newText) {
+        SDL_DestroyTexture(texture);
+        texture = TextureManager::LoadTextTexture(font, newText, color);
+    }
+
     void draw(){
         SDL_RenderCopy(Game::renderer, texture, nullptr, &rect);
     }

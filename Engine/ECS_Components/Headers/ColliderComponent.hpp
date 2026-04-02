@@ -102,6 +102,7 @@ public:
     }
 
     void draw() override{
+        if (!Game::devMode) return;
         if (type == ColliderType::RECT) {
             TextureManager::DrawSquare(collider.x- Game::camera.x,collider.y- Game::camera.y,64,{255,0,0,255});
         } else if(type == CIRCLE) {

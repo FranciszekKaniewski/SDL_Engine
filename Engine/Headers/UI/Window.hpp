@@ -107,6 +107,10 @@ public:
         return boxes[id];
     }
 
+    TextAreaB* getTextAreaById(int id){
+        return textAreas[id];
+    }
+
     void toggle(){
         this->isClosed = !this->isClosed;
     }

@@ -9,6 +9,7 @@
 #include "./Headers/Map.hpp"
 
 bool Game::isRunning = false;
+bool Game::devMode = false;
 
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
@@ -57,11 +58,15 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 }
 
 void Game::handleEvents() {
-    std::cout << currentFPS << "\n";
     while(SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
                 isRunning = false;
+                break;
+            case SDL_KEYDOWN:
+                if (event.key.keysym.sym == SDLK_F1) {
+                    devMode = !devMode;
+                }
                 break;
         }
 
