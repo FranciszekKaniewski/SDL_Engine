@@ -39,8 +39,12 @@ void UIScene3::onEnter(Game& game) {
     player.addComponent<ItemCollision>(uiFrame,manager.getGroup(Game::groupItems),player.getComponent<ColliderComponent>(),player.getComponent<Inventory>());
     player.addComponent<Player_WallsCollisions>(player.getComponent<ColliderComponent>(), player.getComponent<TransformComponent>(),player.getComponent<TransformComponent>().speed , manager.getGroup(Game::groupColliders));
     player.addComponent<HoldingComponent>();
-    player.addComponent<HpComponent>(20);
+    player.addComponent<HpComponent>(20,2.0f);
+    player.getComponent<HpComponent>().setOnDeathCallback([](Entity& e) {
+        std::cout << "Gracz pada" << std::endl;
+    });
     player.addComponent<UIComponent>(uiFrame);
+    player.addComponent<AttackComponent>(manager.getGroup(Game::groupColliders));
     player.addGroup(Game::groupPlayers);
 
     for(int i =0;i<5;i++){
@@ -54,8 +58,15 @@ void UIScene3::onEnter(Game& game) {
     createItem("assets/items/Carrot2.png", "Carrot2", 300, 200);
     createItem("assets/items/Carrot.png",  "Carrot",  400, 200);
 
-    // Tworzenie topora
+    // Tworzenie topora – przypisanie profilu ataku
     createItem("assets/items/axe.png", "Axe", 200, 300);
+    Game::itemsManager.getItemByName("Axe")->weaponComboProfile = &AttackProfiles::AxeCombo;
+
+    auto& fireCamp(manager.addEntity());
+    fireCamp.addComponent<TransformComponent>(300,300,64,64,1);
+    fireCamp.addComponent<SpriteComponent>("assets/objects/fire-camp.png",true);
+    fireCamp.addComponent<ColliderComponent>("fire-camp",32,32,20,CIRCLE);
+    fireCamp.addGroup(Game::groupColliders);
 
     int x = Game::audio.addSong("assets/sounds/soundtrack.mp3");
     Game::audio.playMusic(x);
@@ -108,6 +119,12 @@ void UIScene3::handleEvents(Game &game) {
     //
 
     player->getComponent<ItemCollision>().handleInteraction();
+
+    // ATAK – lewy przycisk myszy
+    if (Game::event.type == SDL_MOUSEBUTTONDOWN &&
+        Game::event.button.button == SDL_BUTTON_LEFT) {
+        player->getComponent<AttackComponent>().triggerAttack();
+    }
 }
 
 void UIScene3::render(Game &game) {

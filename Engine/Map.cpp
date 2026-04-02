@@ -39,6 +39,11 @@ void Map::LoadMap(std::string path,int sizeX,int sizeY) {
                 tree.addComponent<TransformComponent>(x*(tileSize*mapScale),y*(tileSize*mapScale),128,64,1);
                 tree.addComponent<SpriteComponent>("assets/objects/tree.png");
                 tree.addComponent<ColliderComponent>("tree",0,64,tileSize*mapScale);
+                tree.addComponent<HpComponent>(10);
+                tree.getComponent<HpComponent>().setOnDeathCallback([](Entity& e) {
+                    std::cout << "Drzewo pada" << std::endl;
+                    e.destroy();
+                });
                 tree.addGroup(Game::groupColliders);
             }
             mapFile.ignore();

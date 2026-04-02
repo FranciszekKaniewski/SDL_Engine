@@ -6,8 +6,11 @@ private:
     int hp;
     bool immunity;
     float immunityTimer;
+    float immunityTimeAfterHit;
+    std::function<void(Entity&)> onDeathEffect;
+
 public:
-    HpComponent(int hp): hp(hp), immunity(false)
+    HpComponent(int hp, float time=0): hp(hp), immunity(false), immunityTimeAfterHit(time)
     {}
 
     void update() override {
@@ -20,21 +23,34 @@ public:
         }
     }
 
-    void getImmunity(float time) {
+    void getImmunity() {
         immunity = true;
-        immunityTimer = time;
+        immunityTimer = immunityTimeAfterHit;
     }
 
     void getDamage(int damage){
         if(immunity) return;
 
         hp -= damage;
-        getImmunity(2.0f);
-        entity->getComponent<SpriteComponent>().StartBlinking(2.0f,0.2f);
-        entity->getComponent<UIComponent>().showDamage("-1");
+        getImmunity();
+        if (entity->hasComponent<SpriteComponent>())
+            entity->getComponent<SpriteComponent>().StartBlinking(immunityTimeAfterHit,0.2f);
+        if (entity->hasComponent<UIComponent>())
+            entity->getComponent<UIComponent>().showDamage("-1");
+
+        if (hp <= 0) {
+            hp = 0;
+            if (onDeathEffect) {
+                onDeathEffect(*entity);
+            }
+        }
     }
 
     int getHp(){
         return hp;
+    }
+
+    void setOnDeathCallback(std::function<void(Entity&)> callback) {
+        onDeathEffect = callback;
     }
 };

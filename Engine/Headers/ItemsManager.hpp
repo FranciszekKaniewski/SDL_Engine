@@ -1,6 +1,7 @@
 #pragma once
 #include "../../Engine/SDL2/include/SDL2/SDL.h"
 #include "../Headers/TextureManager.hpp"
+#include "../Headers/AttackProfile.hpp"
 
 #include "vector"
 #include "cstring"
@@ -13,9 +14,11 @@ enum ItemType{
 
 class Item{
 public:
-    const char* name;
-    SDL_Texture* texture;
-    ItemType type;
+    const char*          name;
+    SDL_Texture*         texture;
+    ItemType             type;
+    AttackProfile*       attackProfile      = nullptr;  // pojedynczy cios
+    WeaponComboProfile*  weaponComboProfile = nullptr;  // kombo broni (ma priorytet)
 
     Item() : name(nullptr), texture(nullptr), type(NONE) {}
 

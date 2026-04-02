@@ -6,6 +6,7 @@
 #include "../../scripts/ItemCollisions.hpp"
 #include "../../scripts/Player_WallsCollision.hpp"
 #include "../../../Engine/ECS_Components/Headers/HP_Component.hpp"
+#include "../../scripts/Attack.hpp"
 
 class UIScene3 : public GameScene {
 public:
