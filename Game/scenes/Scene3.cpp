@@ -4,12 +4,15 @@ void UIScene3::onEnter(Game& game) {
     font = Font("assets/fonts/gT.otf", 32);
 
     uiFrame = new UIFrame(game);
-    mainWindow = uiFrame->addWindow({-1,game.getWindowSize().height-100,55*5+10,60},"assets/UI/windowBG.png");
+    inventoryWindow = uiFrame->addWindow({-1,game.getWindowSize().height-100,55*5+10,60},"assets/UI/windowBG.png");
     escWindow = uiFrame->addWindow({-1,-1,600,900},"assets/UI/windowBG.png",true);
     escWindow->addButton(font,"assets/UI/btn.png","Exit",{-1,100,400,150},[](){std::cout << "Exit clicked!\n"; Game::isRunning = false;});
 
     Window* itemTextAreaWindow = uiFrame->addWindow({0,0,0,0},"assets/UI/btn.png",true);
     itemTextAreaWindow->addTextArea(font,"Click E!",{255,255,255},{0,0,96,32});
+
+    hpWindow = uiFrame->addWindow({-1,5,400,60},"assets/UI/windowBG.png",false);
+    hpWindow->addTextArea(font,"HP: 0",{0,255,0},{-1,-1,190,50});
 
     devWindow = uiFrame->addWindow({5,5,200,60},"assets/UI/windowBG.png",true);
     devWindow->addTextArea(font,"FPS: 0",{0,255,0},{5,5,190,50});
@@ -33,7 +36,7 @@ void UIScene3::onEnter(Game& game) {
     for(int i =0;i<5;i++){
         int count = player.getComponent<Inventory>().items[i].count;
         std::string text = std::to_string(count);
-        mainWindow->addBox(font,"assets/UI/item-box.png",text,{i*55+5,-1,50,50},{0,0,0});
+        inventoryWindow->addBox(font,"assets/UI/item-box.png",text,{i*55+5,-1,50,50},{0,0,0});
     }
 
     auto& item(manager.addEntity());
@@ -180,6 +183,8 @@ void UIScene3::render(Game &game) {
     if (Game::devMode) {
         devWindow->getTextAreaById(0)->updateText("FPS: " + std::to_string(game.currentFPS));
     }
+
+    hpWindow->getTextAreaById(0)->updateText("HP: " + std::to_string(players[0]->getComponent<HpComponent>().getHp()));
 
     uiFrame->render();
 

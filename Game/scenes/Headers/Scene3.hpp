@@ -16,9 +16,10 @@ public:
     Map* map;
 
     UIFrame* uiFrame;
-    Window* mainWindow;
+    Window* inventoryWindow;
     Window* devWindow;
     Window* escWindow;
+    Window* hpWindow;
 
     void onEnter(Game& game) override;
     void onExit(Game& game) override;
