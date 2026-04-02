@@ -22,7 +22,7 @@ public:
             ColliderComponent& cCol = c->getComponent<ColliderComponent>();
 
             if(Collisions::CheckCollision(cCol, playerCollider)) {
-                if(cCol.tag == "terrain") {
+                if(cCol.tag == "terrain" || cCol.tag == "tree") {
                     float cx = playerCollider.circleCollider.x;
                     float cy = playerCollider.circleCollider.y;
                     float r  = playerCollider.circleCollider.r;

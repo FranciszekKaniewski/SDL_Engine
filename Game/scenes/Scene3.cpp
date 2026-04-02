@@ -63,7 +63,7 @@ void UIScene3::onEnter(Game& game) {
     auto& fireCamp(manager.addEntity());
     fireCamp.addComponent<TransformComponent>(300,300,64,64,1);
     fireCamp.addComponent<SpriteComponent>("assets/objects/fire-camp.png",true);
-    fireCamp.addComponent<ColliderComponent>("fire-camp",0,0,64);
+    fireCamp.addComponent<ColliderComponent>("fire-camp",32,32,20,CIRCLE);
     fireCamp.addGroup(Game::groupColliders);
 
     int x = Game::audio.addSong("assets/sounds/soundtrack.mp3");
@@ -126,17 +126,54 @@ void UIScene3::render(Game &game) {
     for(auto& t : tiles){
         t->draw();
     }
-    auto& colliders = manager.getGroup(Game::groupColliders);
-    for(auto& c : colliders){
-        c->draw();
-    }
     auto& items(manager.getGroup(Game::groupItems));
     for(auto& i : items){
         i->draw();
     }
-    auto& players(manager.getGroup(Game::groupPlayers));
-    for(auto& p : players){
-        p->draw();
+
+    //Rendering base on y
+    auto& players = manager.getGroup(Game::groupPlayers);
+    auto& colliders = manager.getGroup(Game::groupColliders);
+
+    std::vector<Entity*> renderables;
+
+    renderables.insert(renderables.end(), players.begin(), players.end());
+    renderables.insert(renderables.end(), colliders.begin(), colliders.end());
+
+    std::sort(renderables.begin(), renderables.end(), [](Entity* a, Entity* b) {
+        bool hasA = a->hasComponent<ColliderComponent>();
+        bool hasB = b->hasComponent<ColliderComponent>();
+
+        float bottomA = 0.0f;
+        float bottomB = 0.0f;
+
+        if (hasA) {
+            auto& ca = a->getComponent<ColliderComponent>();
+            if (ca.type == ColliderType::RECT) {
+                bottomA = ca.collider.y + ca.collider.h;
+            } else {
+                bottomA = ca.circleCollider.y + ca.circleCollider.r;
+            }
+        } else {
+            bottomA = a->getComponent<TransformComponent>().position.y;
+        }
+
+        if (hasB) {
+            auto& cb = b->getComponent<ColliderComponent>();
+            if (cb.type == ColliderType::RECT) {
+                bottomB = cb.collider.y + cb.collider.h;
+            } else {
+                bottomB = cb.circleCollider.y + cb.circleCollider.r;
+            }
+        } else {
+            bottomB = b->getComponent<TransformComponent>().position.y;
+        }
+
+        return bottomA < bottomB;
+    });
+
+    for (auto& e : renderables) {
+        e->draw();
     }
 
     uiFrame->render();

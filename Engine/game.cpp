@@ -33,7 +33,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         if(window){
             std::cout << "Window Created!" << std::endl;
         }
-        renderer = SDL_CreateRenderer(window,-1,0);
+        renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_PRESENTVSYNC);
         if(renderer){
             SDL_SetRenderDrawColor(renderer,255,255,255,255);
             std::cout << "Renderer Created!" << std::endl;
@@ -57,6 +57,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 }
 
 void Game::handleEvents() {
+    std::cout << currentFPS << "\n";
     while(SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:

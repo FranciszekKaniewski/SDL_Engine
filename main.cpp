@@ -9,6 +9,7 @@ int main(int argv, char** args) {
 
     Uint32 frameStart;
     Uint32 lastTime = SDL_GetTicks();
+    const Uint64 perfFreq = SDL_GetPerformanceFrequency();
 
     game = new Game;
     game->init("Super Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, game->gameSettings.windowSize.wight, game->gameSettings.windowSize.height, false);
@@ -32,6 +33,7 @@ int main(int argv, char** args) {
     float lag = 0.0f;
 
     while (game->running()) {
+        Uint64 perfFrameStart = SDL_GetPerformanceCounter();
         frameStart = SDL_GetTicks();
         float elapsed = frameStart - lastTime;
         lastTime = frameStart;
@@ -54,9 +56,14 @@ int main(int argv, char** args) {
             game->getCurrentScene()->render(*game);
         }
 
-        Uint32 frameTimeMs = SDL_GetTicks() - frameStart;
-        if (game->gameSettings.FPSLimit && frameTimeMs < (1000 / game->gameSettings.maxFPS)) {
-            SDL_Delay((1000 / game->gameSettings.maxFPS) - frameTimeMs);
+        if (game->gameSettings.FPSLimit) {
+            Uint64 targetTicks = perfFreq / game->gameSettings.maxFPS;
+            Uint64 elapsed = SDL_GetPerformanceCounter() - perfFrameStart;
+            if (elapsed < targetTicks) {
+                Uint32 delayMs = static_cast<Uint32>((targetTicks - elapsed) * 1000 / perfFreq);
+                if (delayMs > 1) SDL_Delay(delayMs - 1);
+                while (SDL_GetPerformanceCounter() - perfFrameStart < targetTicks) {}
+            }
         }
 
         frames++;

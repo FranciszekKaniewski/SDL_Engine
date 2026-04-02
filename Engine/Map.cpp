@@ -34,6 +34,12 @@ void Map::LoadMap(std::string path,int sizeX,int sizeY) {
                 auto& tcol(manager.addEntity());
                 tcol.addComponent<ColliderComponent>("terrain",x*(tileSize*mapScale),y*(tileSize*mapScale),tileSize*mapScale);
                 tcol.addGroup(Game::groupColliders);
+            }else if(c == '2'){
+                auto& tree(manager.addEntity());
+                tree.addComponent<TransformComponent>(x*(tileSize*mapScale),y*(tileSize*mapScale),128,64,1);
+                tree.addComponent<SpriteComponent>("assets/objects/tree.png");
+                tree.addComponent<ColliderComponent>("tree",0,64,tileSize*mapScale);
+                tree.addGroup(Game::groupColliders);
             }
             mapFile.ignore();
         }
